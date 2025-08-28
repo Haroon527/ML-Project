@@ -1,6 +1,9 @@
 import sys
 import logging
-
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 def error_message_detail(error, error_detail: sys):
     _, _, exc_tb = error_detail.exc_info()
     line_number = exc_tb.tb_lineno
