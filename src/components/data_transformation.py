@@ -8,13 +8,13 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline   import Pipeline
 from sklearn.impute    import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from components.data_ingestion import DataIngestion
 from src.exception import CustomException
-import logging
+from src.logger import logging
 from sklearn.model_selection import train_test_split   
 from src.utils import save_object
-
-
+class DataTransformation:
+    def __init__(self):
+        pass
 @dataclass
 class DataTransformationConfig:
     preprocessor_obj_file_path: str = os.path.join('artifacts', 'preprocessor.pkl')
@@ -66,6 +66,7 @@ class DataTransformation:
             input_feature_test_df = test_df.drop(columns=[target_column_name], axis=1)
             target_feature_test_df = test_df[target_column_name]
             logging.info(f"Applying preprocessing object on training dataframe and testing dataframe.")
+                
             input_feature_train_arr = preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr = preprocessing_obj.transform(input_feature_test_df)
             train_arr = np.c_[input_feature_train_arr, np.array(target_feature_train_df)]
@@ -79,6 +80,7 @@ class DataTransformation:
         except Exception as e:
             raise CustomException(e, sys)
 if __name__ == "__main__":
+        from src.components.data_ingestion import DataIngestion 
         obj = DataIngestion()
         train_data, test_data = obj.initiate_data_ingestion()
         data_transformation = DataTransformation()
